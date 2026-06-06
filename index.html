@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SUEZY — Experts of Justice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0b1628;--navy-mid:#122040;--navy-light:#1a2d54;--gold:#c9a96e;--gold-light:#e8c88a;--gold-pale:#f5e6cc;--white:#f8f5f0;--gray:#8a8a8a;--light-bg:#f2efe9;--font-display:'Cormorant Garamond',serif;--font-body:'Montserrat',sans-serif;--bg:var(--navy);--surface:var(--navy-mid);--text:var(--white);--text-dim:rgba(248,245,240,.55);--border:rgba(201,169,110,.15);--trans:.5s cubic-bezier(.76,0,.24,1);}
+[data-theme="light"]{--bg:#f2efe9;--surface:#ffffff;--text:#0b1628;--text-dim:rgba(11,22,40,.55);--border:rgba(11,22,40,.12);--navy-mid:#e8e4dc;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none;transition:background .4s,color .4s;}
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cursor-ring{position:fixed;width:34px;height:34px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);opacity:.5;}
+.cursor.hov{width:22px;height:22px;background:transparent;border:2px solid var(--gold);}
+.cursor-ring.hov{width:56px;height:56px;}
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light));z-index:10000;width:0;}
+#pt{position:fixed;inset:0;z-index:9999;pointer-events:none;transform:scaleY(0);transform-origin:bottom;transition:transform var(--trans);background:var(--gold);}
+#pt.in{transform:scaleY(1);transform-origin:bottom;}#pt.out{transform:scaleY(0);transform-origin:top;}
+.page{display:none;opacity:0;}.page.active{display:block;animation:fpIn .55s ease forwards;}
+@keyframes fpIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:9px 50px;background:rgba(11,22,40,.97);border-bottom:1px solid var(--border);font-size:10.5px;letter-spacing:.12em;position:sticky;top:0;z-index:1001;backdrop-filter:blur(12px);}
+.tbL{display:flex;gap:26px;}.tbi{display:flex;align-items:center;gap:7px;color:rgba(248,245,240,.5);}.tbi b{color:var(--gold);}
+.tbR{display:flex;align-items:center;gap:14px;}.tbS{display:flex;gap:10px;}.tbS a{color:rgba(248,245,240,.3);font-size:12px;cursor:pointer;transition:color .3s;text-decoration:none;}.tbS a:hover{color:var(--gold);}
+.themebtn{background:none;border:1px solid var(--border);color:var(--gold);padding:4px 11px;font-size:10.5px;cursor:pointer;font-family:var(--font-body);letter-spacing:.1em;transition:all .3s;}.themebtn:hover{background:var(--gold);color:var(--navy);}
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 50px;position:sticky;top:38px;z-index:1000;background:rgba(11,22,40,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:padding .3s,background .3s;}
+nav.scrolled{padding:12px 50px;background:rgba(11,22,40,.99);}
+.nlogo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;}
+.nmark{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.ntxt{font-family:var(--font-display);font-size:24px;font-weight:600;letter-spacing:.22em;color:var(--white);}
+.nlinks{display:flex;gap:34px;align-items:center;}
+.nlink{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:rgba(248,245,240,.6);cursor:pointer;position:relative;transition:color .3s;padding:3px 0;border:none;background:none;font-family:var(--font-body);}
+.nlink::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width .35s;}
+.nlink:hover,.nlink.active{color:var(--gold);}.nlink:hover::after,.nlink.active::after{width:100%;}
+.ncta{padding:10px 24px;border:1px solid var(--gold);color:var(--gold);font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;background:transparent;font-family:var(--font-body);}.ncta:hover{background:var(--gold);color:var(--navy);}
+.hambtn{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hambtn span{display:block;width:22px;height:1.5px;background:var(--gold);transition:all .3s;}
+.hambtn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hambtn.open span:nth-child(2){opacity:0;}
+.hambtn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+/* MOBILE DRAWER */
+.mdrawer{position:fixed;inset:0;background:rgba(11,22,40,.98);z-index:990;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;pointer-events:none;opacity:0;transition:opacity .4s;}
+.mdrawer.open{opacity:1;pointer-events:all;}
+.mdrawer .nlink{font-size:20px;letter-spacing:.2em;}
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;}
+.hslides{position:absolute;inset:0;z-index:0;}
+.hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background:var(--navy);}
+.hslide.active{opacity:1;}
+.hslide-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;padding-right:60px;pointer-events:none;}
+.hslide-em{font-size:340px;opacity:.04;user-select:none;}
+.hdots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,.22) 1px,transparent 1px);background-size:30px 30px;mask-image:radial-gradient(ellipse 75% 65% at 75% 50%,black 0%,transparent 80%);}
+.hcontent{position:relative;z-index:2;padding:0 80px;max-width:800px;}
+.heyebrow{font-size:10px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;margin-bottom:26px;display:flex;align-items:center;gap:14px;animation:sR .9s ease both;}
+.heyebrow::before{content:'';display:block;width:50px;height:1px;background:var(--gold);}
+.htitle{font-family:var(--font-display);font-size:clamp(50px,6.5vw,94px);font-weight:700;line-height:.93;color:var(--white);margin-bottom:28px;animation:sR 1s .1s ease both;}
+.htitle em{color:var(--gold);font-style:italic;}
+.hdesc{font-size:14px;line-height:1.85;color:var(--text-dim);max-width:480px;margin-bottom:46px;animation:sR 1s .2s ease both;}
+.hacts{display:flex;gap:18px;align-items:center;animation:sR 1s .3s ease both;flex-wrap:wrap;}
+@keyframes sR{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.hnav{position:absolute;bottom:50px;left:80px;z-index:3;display:flex;gap:10px;align-items:center;}
+.hdot{width:6px;height:6px;border-radius:50%;background:rgba(201,169,110,.3);cursor:pointer;transition:all .3s;}
+.hdot.active{width:28px;border-radius:3px;background:var(--gold);}
+.hpanel{position:absolute;right:80px;bottom:60px;z-index:3;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.hpcell{background:rgba(11,22,40,.75);backdrop-filter:blur(10px);padding:22px 28px;border:1px solid rgba(201,169,110,.1);}
+.hpnum{font-family:var(--font-display);font-size:40px;font-weight:300;color:var(--gold);line-height:1;}
+.hplbl{font-size:9.5px;letter-spacing:.16em;color:rgba(248,245,240,.4);text-transform:uppercase;margin-top:5px;}
+/* BUTTONS */
+.bg{padding:15px 38px;background:var(--gold);color:var(--navy);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-family:var(--font-body);font-weight:700;cursor:pointer;border:none;transition:all .3s;position:relative;overflow:hidden;}
+.bg::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:rgba(255,255,255,.18);transition:left .4s;}
+.bg:hover::before{left:100%;}
+.bgh{padding:15px 28px;background:transparent;border:1px solid rgba(201,169,110,.4);color:var(--gold);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-family:var(--font-body);cursor:pointer;transition:all .3s;}
+.bgh:hover{border-color:var(--gold);background:rgba(201,169,110,.1);}
+.btxt{background:none;border:none;font-size:11px;letter-spacing:.18em;color:rgba(248,245,240,.6);cursor:pointer;display:flex;align-items:center;gap:9px;font-family:var(--font-body);transition:color .3s;}
+.btxt:hover{color:var(--gold);}
+/* TRUST */
+.trust{background:var(--light-bg);}[data-theme="light"] .trust{background:white;}
+.trust-in{display:grid;grid-template-columns:repeat(3,1fr);}
+.ti{display:flex;align-items:center;gap:18px;padding:28px 40px;border-right:1px solid rgba(11,22,40,.08);}
+.ti:last-child{border-right:none;}.ti-ic{font-size:36px;flex-shrink:0;}
+.ti h4{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--navy);text-transform:uppercase;}
+.ti p{font-size:11px;color:var(--gray);margin-top:2px;}
+/* SECTIONS */
+.sec{padding:96px 80px;}.secsm{padding:60px 80px;}
+.sd{background:var(--navy);}.sm{background:var(--navy-mid);}.sl{background:var(--light-bg);}
+[data-theme="light"] .sd{background:#e8e4dc;}[data-theme="light"] .sm{background:#f2efe9;}[data-theme="light"] .sl{background:#ffffff;}
+.stag{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.stag::before,.stag::after{content:'';display:block;height:1px;background:var(--gold);flex:1;max-width:40px;}
+.stitle{font-family:var(--font-display);font-size:clamp(36px,4.2vw,64px);font-weight:700;line-height:1.04;letter-spacing:-.01em;}
+.sd .stitle,.sm .stitle{color:var(--white);}[data-theme="light"] .sd .stitle,[data-theme="light"] .sm .stitle{color:var(--navy);}
+.sl .stitle{color:var(--navy);}
+/* EXPERTISE */
+.expgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:56px;background:var(--border);}
+.expi{background:var(--navy);padding:34px 38px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .3s;position:relative;overflow:hidden;}
+[data-theme="light"] .expi{background:#f5f2ec;}
+.expi::before{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--gold);transition:height .35s;}
+.expi:hover{background:rgba(201,169,110,.07);}
+.expi:hover::before{height:100%;}
+.exn{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--white);margin-bottom:4px;}
+[data-theme="light"] .exn{color:var(--navy);}
+.exs{font-size:10.5px;letter-spacing:.1em;color:rgba(201,169,110,.7);}
+.exarr{font-size:11px;letter-spacing:.14em;color:var(--gold);opacity:0;transition:opacity .3s;text-transform:uppercase;}
+.expi:hover .exarr{opacity:1;}
+/* STATS */
+.statsbar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--navy-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.statc{text-align:center;padding:44px 20px;border-right:1px solid var(--border);}
+.statc:last-child{border-right:none;}
+.statn{font-family:var(--font-display);font-size:60px;font-weight:300;color:var(--gold);line-height:1;display:block;}
+.statl{font-size:10px;letter-spacing:.2em;color:var(--text-dim);text-transform:uppercase;margin-top:8px;display:block;}
+/* PROCESS */
+.procgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative;}
+.procgrid::before{content:'';position:absolute;top:36px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:0;}
+.pstep{text-align:center;padding:0 20px;position:relative;z-index:1;}
+.pnum{width:72px;height:72px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-family:var(--font-display);font-size:26px;color:var(--gold);background:var(--navy);transition:all .4s;}
+.pstep:hover .pnum{background:var(--gold);color:var(--navy);}
+[data-theme="light"] .pnum{background:var(--bg);}
+.ptitle{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;}
+[data-theme="light"] .ptitle{color:var(--navy);}
+.pdesc{font-size:12px;line-height:1.7;color:var(--text-dim);}
+/* TEAM */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px;}
+.tcard{position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:var(--navy-mid);}
+.tph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--navy-mid),rgba(201,169,110,.06));font-size:90px;transition:transform .6s;}
+.tcard:hover .tph{transform:scale(1.05);}
+.tov{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,22,40,.96) 0%,rgba(11,22,40,.1) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:28px;}
+.tsoc{display:flex;gap:10px;margin-bottom:10px;transform:translateY(20px);opacity:0;transition:all .35s;}
+.tcard:hover .tsoc{transform:none;opacity:1;}
+.tsb{width:30px;height:30px;border:1px solid rgba(201,169,110,.4);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:11px;transition:background .3s;cursor:pointer;}
+.tsb:hover{background:var(--gold);color:var(--navy);}
+.tname{font-family:var(--font-display);font-size:21px;font-weight:600;color:var(--white);}
+.trole{font-size:10.5px;letter-spacing:.14em;color:var(--gold);margin-top:4px;}
+/* TESTIMONIALS */
+.testis{padding:96px 80px;background:var(--navy-mid);position:relative;overflow:hidden;}
+.tbg{position:absolute;right:-80px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:220px;font-weight:700;color:rgba(201,169,110,.04);pointer-events:none;}
+.tslider{position:relative;margin-top:60px;overflow:hidden;}
+.ttrack{display:flex;transition:transform .6s cubic-bezier(.76,0,.24,1);}
+.tslide{min-width:100%;padding:0 60px;}
+.tquote{font-family:var(--font-display);font-size:clamp(18px,2.2vw,28px);font-weight:300;font-style:italic;color:var(--white);line-height:1.5;margin-bottom:36px;}
+.tquote::before{content:'\201C';font-size:80px;color:var(--gold);opacity:.3;display:block;line-height:.6;margin-bottom:16px;}
+.tauthor{display:flex;align-items:center;gap:18px;}
+.tav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;font-size:22px;}
+.taname{font-size:13px;font-weight:600;color:var(--gold);}
+.tatitle{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.tctrl{display:flex;gap:12px;margin-top:40px;align-items:center;}
+.tbtn{width:44px;height:44px;border:1px solid var(--border);background:transparent;color:var(--gold);font-size:18px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;}
+.tbtn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.tdots{display:flex;gap:8px;align-items:center;}
+.tdot{width:6px;height:6px;border-radius:50%;background:rgba(201,169,110,.25);cursor:pointer;transition:all .3s;}
+.tdot.active{background:var(--gold);width:22px;border-radius:3px;}
+/* BLOG */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;}
+.bcard{background:rgba(255,255,255,.03);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .35s,box-shadow .35s;}
+[data-theme="light"] .bcard{background:white;box-shadow:0 2px 20px rgba(0,0,0,.06);}
+.bcard:hover{transform:translateY(-8px);box-shadow:0 24px 64px rgba(0,0,0,.3);}
+.bthumb{height:210px;background:linear-gradient(135deg,var(--navy-mid),rgba(201,169,110,.09));display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;}
+.btbadge{position:absolute;top:14px;left:14px;background:var(--gold);color:var(--navy);font-size:9px;letter-spacing:.18em;padding:4px 10px;text-transform:uppercase;font-weight:700;}
+.bbody{padding:26px;}
+.bmeta{font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:10px;}
+.btitle{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--white);line-height:1.3;margin-bottom:12px;}
+[data-theme="light"] .btitle{color:var(--navy);}
+.bexcerpt{font-size:12.5px;line-height:1.75;color:var(--text-dim);margin-bottom:18px;}
+.blink{font-size:9.5px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:7px;transition:gap .3s;}
+.bcard:hover .blink{gap:12px;}
+/* FAQ */
+.faqlist{margin-top:50px;display:flex;flex-direction:column;gap:2px;}
+.faqitem{border:1px solid var(--border);overflow:hidden;transition:border-color .3s;}
+.faqitem.open{border-color:rgba(201,169,110,.4);}
+.faqq{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;cursor:pointer;gap:20px;transition:background .3s;}
+.faqq:hover{background:rgba(201,169,110,.05);}
+.faqtxt{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--white);}
+[data-theme="light"] .faqtxt{color:var(--navy);}
+.faqico{width:28px;height:28px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px;flex-shrink:0;transition:transform .35s,background .3s;}
+.faqitem.open .faqico{transform:rotate(45deg);background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.faqa{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.76,0,.24,1);}
+.faqain{padding:0 28px 22px;font-size:13px;line-height:1.8;color:var(--text-dim);}
+.faqitem.open .faqa{max-height:300px;}
+/* NEWSLETTER */
+.newsletter{background:linear-gradient(135deg,var(--navy-mid),var(--navy-light));padding:72px 80px;text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.nlbg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,.12) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+.newsletter h2{font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--white);margin-bottom:14px;}
+.newsletter p{font-size:13px;color:var(--text-dim);margin-bottom:36px;}
+.nlform{display:flex;gap:0;max-width:500px;margin:0 auto;}
+.nlinput{flex:1;padding:14px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(201,169,110,.25);border-right:none;color:var(--white);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color .3s;}
+.nlinput:focus{border-color:var(--gold);}
+.nlinput::placeholder{color:rgba(248,245,240,.25);}
+.nlbtn{padding:14px 28px;background:var(--gold);color:var(--navy);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;font-family:var(--font-body);cursor:pointer;border:none;transition:background .3s;}
+.nlbtn:hover{background:var(--gold-light);}
+/* CONTACT */
+.ctwrap{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;}
+.ctinfo h3{font-family:var(--font-display);font-size:clamp(28px,3vw,46px);font-weight:700;color:var(--navy);margin-bottom:16px;}
+.ctinfo p{font-size:13px;line-height:1.85;color:rgba(11,22,40,.6);margin-bottom:32px;}
+.ctdet{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.cdr{display:flex;align-items:flex-start;gap:14px;}
+.cdic{width:38px;height:38px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.cdlbl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.cdval{font-size:13px;color:var(--navy);}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
+.opill{padding:10px 16px;border:1px solid rgba(11,22,40,.12);font-size:12px;color:rgba(11,22,40,.6);display:flex;align-items:center;gap:8px;}
+.opill::before{content:'◆';color:var(--gold);font-size:7px;}
+.cform{display:flex;flex-direction:column;gap:18px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.flbl{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(11,22,40,.45);}
+.finput,.fsel,.ftxt{padding:13px 16px;border:1px solid rgba(11,22,40,.14);background:white;font-family:var(--font-body);font-size:13px;color:var(--navy);outline:none;transition:border-color .3s,box-shadow .3s;}
+.finput:focus,.fsel:focus,.ftxt:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.1);}
+.ftxt{resize:vertical;min-height:110px;}
+.fsel{appearance:none;cursor:pointer;}
+/* CAREERS */
+.chero{padding:120px 80px 80px;background:var(--navy);position:relative;overflow:hidden;}
+.chero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,.18) 1px,transparent 1px);background-size:28px 28px;}
+.cherocont{position:relative;z-index:1;}
+.jfilter{display:flex;gap:12px;margin-top:48px;flex-wrap:wrap;}
+.fbtn{padding:9px 22px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-family:var(--font-body);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.fbtn.active,.fbtn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.07);}
+.jgrid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:16px;}
+.jcard{background:var(--navy);border:1px solid var(--border);padding:32px;cursor:pointer;transition:all .3s;position:relative;}
+.jcard:hover{border-color:rgba(201,169,110,.4);background:rgba(201,169,110,.04);}
+.jbadge{display:inline-block;padding:4px 10px;background:rgba(201,169,110,.12);color:var(--gold);font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;}
+.jtitle{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--white);margin-bottom:8px;}
+.jmeta{display:flex;gap:16px;font-size:11px;color:var(--text-dim);margin-bottom:16px;}
+.jdesc{font-size:12.5px;line-height:1.75;color:var(--text-dim);}
+.japply{position:absolute;right:28px;bottom:28px;opacity:0;transition:opacity .3s;}
+.jcard:hover .japply{opacity:1;}
+/* ABOUT */
+.ahero{min-height:55vh;display:flex;align-items:flex-end;padding:0 80px 60px;position:relative;overflow:hidden;background:var(--navy);}
+.ahero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,.17) 1px,transparent 1px);background-size:26px 26px;z-index:0;}
+.ahcont{position:relative;z-index:1;}
+.a2col{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;padding:96px 80px;}
+.avis{aspect-ratio:4/5;background:linear-gradient(160deg,var(--navy-mid),rgba(201,169,110,.07));display:flex;align-items:center;justify-content:center;font-size:110px;position:relative;border:1px solid var(--border);}
+.avis::after{content:'45\A YEARS';white-space:pre;position:absolute;bottom:-1px;right:-1px;background:var(--gold);color:var(--navy);font-family:var(--font-display);font-size:20px;font-weight:700;line-height:1.1;padding:18px 20px;text-align:center;}
+.atxt p{font-size:13.5px;line-height:1.9;color:var(--text-dim);margin-bottom:18px;}
+.timeline{margin-top:48px;padding-left:24px;border-left:2px solid var(--border);}
+.tlitem{position:relative;padding:0 0 32px 28px;}
+.tlitem::before{content:'';position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--navy);}
+.tlyear{font-size:10px;letter-spacing:.2em;color:var(--gold);margin-bottom:4px;}
+.tlev{font-size:13.5px;color:var(--text-dim);}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.vcard{padding:28px;border:1px solid var(--border);text-align:center;transition:all .3s;}
+.vcard:hover{border-color:rgba(201,169,110,.4);background:rgba(201,169,110,.04);}
+.vic{font-size:30px;margin-bottom:12px;}
+.vcard h4{font-family:var(--font-display);font-size:17px;color:var(--gold);margin-bottom:8px;}
+.vcard p{font-size:11.5px;color:var(--text-dim);line-height:1.7;}
+/* DASHBOARD */
+.dash{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+.dside{background:var(--navy-mid);border-right:1px solid var(--border);padding:30px 0;display:flex;flex-direction:column;}
+.dlogo{padding:0 24px 28px;font-family:var(--font-display);font-size:22px;letter-spacing:.2em;color:var(--white);border-bottom:1px solid var(--border);}
+.dnav{flex:1;padding:20px 0;}
+.dnavitem{display:flex;align-items:center;gap:12px;padding:12px 24px;font-size:11.5px;color:var(--text-dim);cursor:pointer;transition:all .3s;letter-spacing:.1em;border:none;background:none;width:100%;text-align:left;font-family:var(--font-body);}
+.dnavitem:hover,.dnavitem.active{background:rgba(201,169,110,.08);color:var(--gold);}
+.di{font-size:16px;}
+.dmain{background:var(--bg);padding:36px 40px;overflow:auto;}
+.dheader{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.dwelcome{font-family:var(--font-display);font-size:28px;color:var(--white);}
+[data-theme="light"] .dwelcome{color:var(--navy);}
+.dwelcome span{color:var(--gold);}
+.dcards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.dc{background:var(--surface);border:1px solid var(--border);padding:22px;transition:border-color .3s;}
+.dc:hover{border-color:rgba(201,169,110,.35);}
+.dcic{font-size:24px;margin-bottom:12px;}
+.dcn{font-family:var(--font-display);font-size:36px;color:var(--gold);line-height:1;}
+.dcl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-top:4px;}
+.dtw{background:var(--surface);border:1px solid var(--border);padding:24px;margin-bottom:24px;}
+.dttitle{font-family:var(--font-display);font-size:20px;color:var(--white);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+[data-theme="light"] .dttitle{color:var(--navy);}
+.dtable{width:100%;border-collapse:collapse;}
+.dtable th{text-align:left;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);padding:0 16px 12px 0;}
+.dtable td{padding:12px 16px 12px 0;font-size:12.5px;border-bottom:1px solid var(--border);color:var(--text);}
+.dtable tr:last-child td{border-bottom:none;}
+.sbadge{display:inline-block;padding:3px 10px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
+.sa{background:rgba(39,174,96,.15);color:#27ae60;}.sp{background:rgba(241,196,15,.15);color:#f39c12;}.sc{background:rgba(189,189,189,.15);color:#aaa;}
+.dlogout{padding:18px 24px;border-top:1px solid var(--border);}
+/* LOGIN */
+.lwrap{min-height:100vh;display:flex;}
+.lvis{flex:1.3;position:relative;overflow:hidden;background:linear-gradient(155deg,#060d1b,var(--navy-mid));display:flex;align-items:center;justify-content:center;}
+.lvin{text-align:center;position:relative;z-index:2;padding:60px;}
+.lvic{font-size:130px;opacity:.65;margin-bottom:28px;}
+.lvt{font-family:var(--font-display);font-size:46px;font-weight:300;color:var(--white);letter-spacing:.08em;}
+.lvs{font-size:12px;color:rgba(248,245,240,.35);margin-top:12px;letter-spacing:.1em;}
+.lvf{display:flex;flex-direction:column;gap:14px;margin-top:40px;text-align:left;}
+.lvfi{display:flex;align-items:center;gap:14px;font-size:12.5px;color:rgba(248,245,240,.5);}
+.lvfi::before{content:'✓';color:var(--gold);font-weight:700;}
+.lfp{flex:1;display:flex;flex-direction:column;justify-content:center;padding:72px 64px;background:rgba(5,10,20,.97);}
+.lflogo{font-family:var(--font-display);font-size:28px;letter-spacing:.3em;color:var(--white);margin-bottom:56px;}
+.lft{font-family:var(--font-display);font-size:34px;color:var(--white);margin-bottom:6px;}
+.lfs{font-size:11.5px;color:rgba(248,245,240,.35);letter-spacing:.08em;margin-bottom:38px;}
+.lff{margin-bottom:22px;}
+.lflbl{display:block;font-size:9.5px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:9px;}
+.lfinput{width:100%;padding:14px 0;background:transparent;border:none;border-bottom:1px solid rgba(201,169,110,.22);font-family:var(--font-body);font-size:14px;color:var(--white);outline:none;transition:border-color .3s;}
+.lfinput:focus{border-color:var(--gold);}
+.lfact{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.lfrem{display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(248,245,240,.4);cursor:pointer;}
+.lffgt{font-size:11.5px;color:rgba(248,245,240,.3);cursor:pointer;transition:color .3s;background:none;border:none;font-family:var(--font-body);}
+.lffgt:hover{color:var(--gold);}
+.lfbtn{width:100%;padding:15px;background:var(--gold);color:var(--navy);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-family:var(--font-body);font-weight:700;cursor:pointer;border:none;transition:background .3s;}
+.lfbtn:hover{background:var(--gold-light);}
+.lfdiv{display:flex;align-items:center;gap:16px;margin:22px 0;color:rgba(248,245,240,.2);font-size:11px;}
+.lfdiv::before,.lfdiv::after{content:'';flex:1;height:1px;background:rgba(248,245,240,.1);}
+.lfback{margin-top:20px;text-align:center;font-size:12px;color:rgba(248,245,240,.3);}
+.lfback a{color:var(--gold);cursor:pointer;}
+/* UTILS */
+#btt{position:fixed;bottom:36px;right:36px;width:44px;height:44px;background:var(--gold);color:var(--navy);border:none;font-size:18px;cursor:pointer;z-index:800;opacity:0;transform:translateY(20px);transition:all .35s;display:flex;align-items:center;justify-content:center;}
+#btt.vis{opacity:1;transform:none;}#btt:hover{background:var(--gold-light);}
+#cookie{position:fixed;bottom:0;left:0;right:0;background:rgba(11,22,40,.97);border-top:1px solid var(--border);padding:18px 50px;display:flex;align-items:center;justify-content:space-between;gap:30px;z-index:890;transform:translateY(100%);transition:transform .5s ease;backdrop-filter:blur(10px);}
+#cookie.show{transform:none;}
+#cookie p{font-size:12px;color:rgba(248,245,240,.5);max-width:600px;}
+.ckbtns{display:flex;gap:10px;flex-shrink:0;}
+.toast-c{position:fixed;top:90px;right:30px;z-index:9000;display:flex;flex-direction:column;gap:10px;}
+.toast{background:var(--navy-mid);border:1px solid var(--border);border-left:3px solid var(--gold);padding:14px 22px;font-size:12px;letter-spacing:.06em;color:var(--white);min-width:280px;transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 30px rgba(0,0,0,.3);}
+.toast.show{transform:none;}.toast.terr{border-left-color:#e74c3c;}.toast.tok{border-left-color:#27ae60;}
+/* REVEAL */
+.rev{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+.rev.rl{transform:translateX(-36px);}.rev.rr{transform:translateX(36px);}
+.rev.vis{opacity:1!important;transform:none!important;}
+.d1{transition-delay:.12s;}.d2{transition-delay:.24s;}.d3{transition-delay:.36s;}.d4{transition-delay:.48s;}
+/* FOOTER */
+.footer{background:var(--navy);border-top:1px solid var(--border);padding:64px 80px 28px;}
+.ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:48px;}
+.fbrand p{font-size:12.5px;line-height:1.8;color:rgba(248,245,240,.35);margin-top:14px;max-width:280px;}
+.fcol h4{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.fcol ul{list-style:none;}
+.fcol ul li{font-size:12.5px;color:rgba(248,245,240,.4);margin-bottom:9px;cursor:pointer;transition:color .3s;}
+.fcol ul li:hover{color:var(--gold);}
+.fsoc{display:flex;gap:10px;margin-top:22px;}
+.fsocia{width:34px;height:34px;border:1px solid rgba(201,169,110,.2);display:flex;align-items:center;justify-content:center;color:rgba(248,245,240,.3);font-size:13px;cursor:pointer;transition:all .3s;}
+.fsocia:hover{border-color:var(--gold);color:var(--gold);}
+.fbot{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;align-items:center;}
+.fbot p{font-size:11px;color:rgba(248,245,240,.25);}
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:16px 20px;}.nlinks,.ncta{display:none;}.hambtn{display:flex;}
+  .hcontent{padding:0 24px;}.hpanel{display:none;}.hnav{left:24px;}
+  .sec,.secsm{padding:56px 24px;}
+  .expgrid{grid-template-columns:1fr;}.statsbar{grid-template-columns:1fr 1fr;}
+  .tgrid{grid-template-columns:1fr 1fr;}.bgrid{grid-template-columns:1fr;}
+  .procgrid{grid-template-columns:1fr 1fr;}.procgrid::before{display:none;}
+  .ctwrap{grid-template-columns:1fr;}.a2col{grid-template-columns:1fr;padding:56px 24px;}
+  .vgrid{grid-template-columns:1fr 1fr;}.jgrid{grid-template-columns:1fr;}
+  .ftop{grid-template-columns:1fr 1fr;}.trust-in{grid-template-columns:1fr;}
+  .dash{grid-template-columns:1fr;}.dside{display:none;}
+  .lvis{display:none;}.topbar{display:none;}
+  #cookie{padding:16px 20px;flex-direction:column;align-items:flex-start;}
+  .nlform{flex-direction:column;}.nlinput{border-right:1px solid rgba(201,169,110,.25);}
+  .frow{grid-template-columns:1fr;}.tslide{padding:0 16px;}
+  .chero,.ahero{padding:80px 24px 40px;}.footer{padding:48px 24px 20px;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+<div id="progress"></div>
+<div id="pt"></div>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast-c" id="tc"></div>
+
+<!-- COOKIE -->
+<div id="cookie">
+  <p>We use cookies to improve your experience. By continuing you agree to our <a style="color:var(--gold);cursor:pointer;">Cookie Policy</a>.</p>
+  <div class="ckbtns">
+    <button class="bgh" style="padding:8px 16px;font-size:10px;" onclick="dismissCookie()">Decline</button>
+    <button class="bg" style="padding:8px 20px;font-size:10px;" onclick="acceptCookie()">Accept All</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" style="position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:8000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(8px);">
+  <div id="mbox" style="background:var(--navy-mid);border:1px solid rgba(201,169,110,.25);padding:44px;max-width:480px;width:90%;position:relative;transform:translateY(28px) scale(.97);transition:transform .45s cubic-bezier(.34,1.56,.64,1);">
+    <button onclick="closeModal()" style="position:absolute;top:18px;right:18px;background:none;border:none;color:rgba(248,245,240,.3);font-size:20px;cursor:pointer;transition:color .3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(248,245,240,.3)'">✕</button>
+    <div class="stag" style="margin-bottom:12px;">Free Consultation</div>
+    <h3 style="font-family:var(--font-display);font-size:28px;color:var(--white);margin-bottom:6px;">Book an Appointment</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:28px;">A specialist will confirm within 24 hours.</p>
+    <div class="cform">
+      <div class="fg"><label class="flbl">Full Name</label><input class="finput" type="text" placeholder="Your full name" style="background:rgba(255,255,255,.05);color:var(--white);border-color:var(--border);"/></div>
+      <div class="fg"><label class="flbl">Email</label><input class="finput" type="email" placeholder="email@example.com" style="background:rgba(255,255,255,.05);color:var(--white);border-color:var(--border);"/></div>
+      <div class="fg">
+        <label class="flbl">Practice Area</label>
+        <select class="fsel" style="background:rgba(255,255,255,.05);color:var(--white);border-color:var(--border);">
+          <option value="">Select area…</option>
+          <option>Criminal Law</option><option>Employment Law</option><option>Corporate Law</option>
+          <option>Family Law</option><option>Intellectual Property</option><option>Medical Law</option>
+        </select>
+      </div>
+      <button class="bg" style="margin-top:4px;" onclick="submitModal()">Request Appointment</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <div class="tbL">
+    <div class="tbi"><b>📞</b> +383 (21) 23 43984</div>
+    <div class="tbi"><b>⏰</b> Mon–Fri 7:30AM–6:30PM</div>
+    <div class="tbi"><b>📍</b> NY · London · Zurich · Dubai</div>
+  </div>
+  <div class="tbR">
+    <div class="tbS"><a>𝕏</a><a>in</a><a>f</a></div>
+    <button class="themebtn" id="tbtn" onclick="toggleTheme()">☀ Light</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mnav">
+  <a class="nlogo" onclick="goPage('home')"><div class="nmark">⚖️</div><span class="ntxt">SUEZY</span></a>
+  <div class="nlinks">
+    <button class="nlink active" data-page="home" onclick="goPage('home')">Home</button>
+    <button class="nlink" data-page="about" onclick="goPage('about')">About</button>
+    <button class="nlink" data-page="expertise" onclick="goPage('expertise')">Expertise</button>
+    <button class="nlink" onclick="gotoSec('home','blog-sec')">Insights</button>
+    <button class="nlink" data-page="careers" onclick="goPage('careers')">Careers</button>
+    <button class="nlink" onclick="gotoSec('home','contact-sec')">Contact</button>
+    <button class="nlink" data-page="login" onclick="goPage('login')">Client Portal</button>
+  </div>
+  <button class="ncta" onclick="openModal()">Free Consultation</button>
+  <button class="hambtn" id="ham" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mdrawer" id="mdrawer">
+  <button class="nlink" style="font-size:20px;" onclick="goPage('home');closeMob()">Home</button>
+  <button class="nlink" style="font-size:20px;" onclick="goPage('about');closeMob()">About</button>
+  <button class="nlink" style="font-size:20px;" onclick="goPage('expertise');closeMob()">Expertise</button>
+  <button class="nlink" style="font-size:20px;" onclick="goPage('careers');closeMob()">Careers</button>
+  <button class="nlink" style="font-size:20px;" onclick="gotoSec('home','contact-sec');closeMob()">Contact</button>
+  <button class="nlink" style="font-size:20px;" onclick="goPage('login');closeMob()">Client Portal</button>
+  <button class="bg" style="margin-top:12px;" onclick="openModal();closeMob()">Free Consultation</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hslides">
+      <div class="hslide active"><div class="hslide-bg"><div class="hslide-em">⚖️</div></div><div class="hdots"></div></div>
+      <div class="hslide"><div class="hslide-bg"><div class="hslide-em">🏛️</div></div><div class="hdots"></div></div>
+      <div class="hslide"><div class="hslide-bg"><div class="hslide-em">🔒</div></div><div class="hdots"></div></div>
+    </div>
+    <div class="hcontent">
+      <div class="heyebrow" id="hEye">Home of Law &amp; Order</div>
+      <h1 class="htitle" id="hTitle">Experts<br>of <em>Justice</em></h1>
+      <p class="hdesc" id="hDesc">We combine 45 years of legal excellence with a modern, client-first approach. From criminal defense to intellectual property — our attorneys are your advocates.</p>
+      <div class="hacts">
+        <button class="bg" onclick="gotoSec('home','expertise-sec')">Explore Expertise</button>
+        <button class="bgh" onclick="openModal()">Free Consultation</button>
+        <button class="btxt" onclick="goPage('about')">Our Story <span style="display:inline-block;transition:transform .3s;">→</span></button>
+      </div>
+    </div>
+    <div class="hnav">
+      <div class="hdot active" onclick="setSlide(0)"></div>
+      <div class="hdot" onclick="setSlide(1)"></div>
+      <div class="hdot" onclick="setSlide(2)"></div>
+    </div>
+    <div class="hpanel">
+      <div class="hpcell"><div class="hpnum" data-target="54">0</div><div class="hplbl">Employees</div></div>
+      <div class="hpcell"><div class="hpnum" data-target="34">0</div><div class="hplbl">Programs</div></div>
+      <div class="hpcell"><div class="hpnum" data-target="320">0</div><div class="hplbl">Cases Won</div></div>
+      <div class="hpcell"><div class="hpnum" data-target="192">0</div><div class="hplbl">Donations</div></div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="trust-in">
+      <div class="ti rev rl"><div class="ti-ic">🏆</div><div><h4>Best Law Firm</h4><p>45 Years of Experience</p></div></div>
+      <div class="ti rev"><div class="ti-ic">⚖️</div><div><h4>Best Lawyers</h4><p>45 Years of Experience</p></div></div>
+      <div class="ti rev rr"><div class="ti-ic">🛡️</div><div><h4>Best Legal Assistance</h4><p>45 Years of Experience</p></div></div>
+    </div>
+  </div>
+
+  <!-- EXPERTISE -->
+  <section class="sec sd" id="expertise-sec">
+    <div class="stag rev">Fields of Expertise</div>
+    <h2 class="stitle rev d1">Vision Makes Us Who We Are</h2>
+    <div class="expgrid">
+      <div class="expi rev" onclick="goPage('expertise')"><div><div class="exn">Antimonopoly Compliance</div><div class="exs">2 Lawyers</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev d1" onclick="goPage('expertise')"><div><div class="exn">Criminal Law</div><div class="exs">7 Lawyers</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev" onclick="goPage('expertise')"><div><div class="exn">Employment Law</div><div class="exs">4 Experts</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev d1" onclick="goPage('expertise')"><div><div class="exn">Building &amp; Architect Law</div><div class="exs">4 Experts</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev" onclick="goPage('expertise')"><div><div class="exn">Public Procurement Law</div><div class="exs">3 Lawyers</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev d1" onclick="goPage('expertise')"><div><div class="exn">Intellectual Property</div><div class="exs">2 Experts</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev" onclick="goPage('expertise')"><div><div class="exn">Medical Law</div><div class="exs">5 Experts</div></div><div class="exarr">Learn More ↗</div></div>
+      <div class="expi rev d1" onclick="goPage('expertise')"><div><div class="exn">Family &amp; Inheritance Law</div><div class="exs">4 Experts</div></div><div class="exarr">Learn More ↗</div></div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="statsbar">
+    <div class="statc rev"><span class="statn" data-target="54">0</span><span class="statl">Employees</span></div>
+    <div class="statc rev d1"><span class="statn" data-target="34">0</span><span class="statl">Programs</span></div>
+    <div class="statc rev d2"><span class="statn" data-target="320">0</span><span class="statl">Cases Won</span></div>
+    <div class="statc rev d3"><span class="statn" data-target="192">0</span><span class="statl">Donations</span></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec sd">
+    <div class="stag rev" style="justify-content:center;">Our Process</div>
+    <h2 class="stitle rev d1" style="text-align:center;">How We Work For You</h2>
+    <div class="procgrid">
+      <div class="pstep rev"><div class="pnum">01</div><h3 class="ptitle">Initial Consultation</h3><p class="pdesc">Free 30-minute session to understand your legal situation and chart the best path forward.</p></div>
+      <div class="pstep rev d1"><div class="pnum">02</div><h3 class="ptitle">Case Analysis</h3><p class="pdesc">Our specialists conduct thorough research, review evidence, and craft a strategic legal approach.</p></div>
+      <div class="pstep rev d2"><div class="pnum">03</div><h3 class="ptitle">Active Representation</h3><p class="pdesc">We advocate fiercely on your behalf — in negotiations, hearings, and courtroom proceedings.</p></div>
+      <div class="pstep rev d3"><div class="pnum">04</div><h3 class="ptitle">Resolution &amp; Beyond</h3><p class="pdesc">We see cases through to full resolution and provide post-case guidance to protect your interests.</p></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="sec sm">
+    <div style="text-align:center">
+      <div class="stag rev" style="justify-content:center;">Our Experts</div>
+      <h2 class="stitle rev d1" style="text-align:center;">Our Best Experts</h2>
+    </div>
+    <div class="tgrid">
+      <div class="tcard rev"><div class="tph">👨‍💼</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">𝕏</div><div class="tsb">✉</div></div><div class="tname">ALPHA</div><div class="trole">Senior Partner · Criminal Law</div></div></div>
+      <div class="tcard rev d1"><div class="tph">👨‍⚖️</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">𝕏</div><div class="tsb">✉</div></div><div class="tname">BETA</div><div class="trole">Partner · Corporate Law</div></div></div>
+      <div class="tcard rev d2"><div class="tph">👩‍💼</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">𝕏</div><div class="tsb">✉</div></div><div class="tname">GAMMA</div><div class="trole">Associate · Family Law</div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;"><button class="bgh" onclick="goPage('about')">Meet All Attorneys →</button></div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testis">
+    <div class="tbg">"</div>
+    <div class="stag rev">Client Stories</div>
+    <h2 class="stitle rev d1">What Our Clients Say</h2>
+    <div class="tslider">
+      <div class="ttrack" id="ttrack">
+        <div class="tslide"><p class="tquote">SUEZY's attorneys navigated an incredibly complex cross-border dispute with precision and professionalism. They kept us informed at every step and delivered results beyond our expectations.</p><div class="tauthor"><div class="tav">👤</div><div><div class="taname">James Whitmore</div><div class="tatitle">CEO, Whitmore Industries</div></div></div></div>
+        <div class="tslide"><p class="tquote">When facing a serious criminal charge, I needed the best. SUEZY's criminal defense team was relentless. Their expertise and dedication resulted in a complete acquittal. I am forever grateful.</p><div class="tauthor"><div class="tav">👤</div><div><div class="taname">Sarah Chen</div><div class="tatitle">Private Client</div></div></div></div>
+        <div class="tslide"><p class="tquote">The employment law team at SUEZY helped us build airtight contracts and navigate a difficult restructuring. Their proactive approach saved us from significant legal exposure.</p><div class="tauthor"><div class="tav">👤</div><div><div class="taname">Marcus O'Brien</div><div class="tatitle">HR Director, Nexus Corp</div></div></div></div>
+      </div>
+    </div>
+    <div class="tctrl">
+      <button class="tbtn" onclick="prevTesti()">←</button>
+      <button class="tbtn" onclick="nextTesti()">→</button>
+      <div class="tdots"><div class="tdot active" onclick="setTesti(0)"></div><div class="tdot" onclick="setTesti(1)"></div><div class="tdot" onclick="setTesti(2)"></div></div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="sec sd" id="blog-sec">
+    <div class="stag rev">Latest Insights</div>
+    <h2 class="stitle rev d1">Legal Insights &amp; Publications</h2>
+    <div class="bgrid">
+      <div class="bcard rev"><div class="bthumb">📰<div class="btbadge">Privacy</div></div><div class="bbody"><div class="bmeta">Jan 30, 2025 · Consultant</div><h3 class="btitle">Fresh Legal Tech's Predictions for Privacy in 2025</h3><p class="bexcerpt">How emerging technology is reshaping data privacy obligations for businesses across all industries.</p><div class="blink">Learn More <span>↗</span></div></div></div>
+      <div class="bcard rev d1"><div class="bthumb">⚖️<div class="btbadge">Civil Law</div></div><div class="bbody"><div class="bmeta">Jan 30, 2025 · Consultant</div><h3 class="btitle">The Language of Civil Law by Urban A. Lavery</h3><p class="bexcerpt">A deep dive into the evolving lexicon of civil procedure and what it means for contemporary practice.</p><div class="blink">Learn More <span>↗</span></div></div></div>
+      <div class="bcard rev d2"><div class="bthumb">🔒<div class="btbadge">Tech Law</div></div><div class="bbody"><div class="bmeta">Jan 30, 2025 · Consultant</div><h3 class="btitle">Legal Tech's Predictions &amp; Trends for Privacy in 2028</h3><p class="bexcerpt">Looking ahead at regulatory changes on the horizon and how firms can stay ahead of the curve.</p><div class="blink">Learn More <span>↗</span></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;"><button class="bgh" onclick="showT('📚 Full blog coming soon!','')">View All Articles →</button></div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec sm">
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:72px;align-items:start;">
+      <div>
+        <div class="stag rev">Common Questions</div>
+        <h2 class="stitle rev d1">Frequently Asked Questions</h2>
+        <p style="font-size:13px;line-height:1.8;color:var(--text-dim);margin-top:20px;" class="rev d2">Can't find what you're looking for? Our team is available 24/7.</p>
+        <button class="bg" style="margin-top:28px;" onclick="gotoSec('home','contact-sec')">Contact Us</button>
+      </div>
+      <div class="faqlist rev d1">
+        <div class="faqitem"><div class="faqq" onclick="toggleFaq(this)"><span class="faqtxt">How do I choose the right lawyer for my case?</span><div class="faqico">+</div></div><div class="faqa"><div class="faqain">During your free initial consultation, we assess your case and match you with the most suitable attorney based on practice area, case complexity, and your personal needs.</div></div></div>
+        <div class="faqitem"><div class="faqq" onclick="toggleFaq(this)"><span class="faqtxt">What is domestic violence from a legal perspective?</span><div class="faqico">+</div></div><div class="faqa"><div class="faqain">Domestic violence encompasses physical, emotional, financial, and sexual abuse within intimate partner or family relationships. Legally it carries serious criminal penalties and our family law experts can help you navigate protection orders and your rights.</div></div></div>
+        <div class="faqitem"><div class="faqq" onclick="toggleFaq(this)"><span class="faqtxt">How is child custody determined in court?</span><div class="faqico">+</div></div><div class="faqa"><div class="faqain">Courts prioritize the best interests of the child, considering factors like parental stability, the child's relationship with each parent, living arrangements, and the child's own wishes for older children. Our family attorneys guide you through every stage.</div></div></div>
+        <div class="faqitem"><div class="faqq" onclick="toggleFaq(this)"><span class="faqtxt">Are your lawyers licensed to practice internationally?</span><div class="faqico">+</div></div><div class="faqa"><div class="faqain">Yes. With offices in the US, UK, EU (Zurich), and UAE (Abu Dhabi), SUEZY has licensed attorneys in each jurisdiction. For cross-border matters we coordinate a multi-jurisdictional team to ensure seamless representation.</div></div></div>
+        <div class="faqitem"><div class="faqq" onclick="toggleFaq(this)"><span class="faqtxt">What are your fees and billing structure?</span><div class="faqico">+</div></div><div class="faqa"><div class="faqain">We offer transparent billing — hourly rates, fixed-fee arrangements, and contingency options depending on case type. All fees are discussed upfront. Your first consultation is always free.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="nlbg"></div>
+    <div class="stag rev" style="justify-content:center;">Stay Informed</div>
+    <h2 class="rev d1">Legal Insights, Delivered</h2>
+    <p class="rev d2">Subscribe to our monthly newsletter for law updates, case studies, and expert commentary.</p>
+    <div class="nlform rev d3">
+      <input class="nlinput" type="email" id="nlEmail" placeholder="Enter your email address…"/>
+      <button class="nlbtn" onclick="handleNL()">Subscribe</button>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec sl" id="contact-sec">
+    <div class="ctwrap">
+      <div class="ctinfo rev rl">
+        <div class="stag">Get In Touch</div>
+        <h3>Make An Inquiry</h3>
+        <p>We would love to work with you. Our specialists respond within 24 hours. All consultations are strictly confidential.</p>
+        <div class="ctdet">
+          <div class="cdr"><div class="cdic">📞</div><div><div class="cdlbl">Phone</div><div class="cdval">+383 (21) 23 43984</div></div></div>
+          <div class="cdr"><div class="cdic">✉</div><div><div class="cdlbl">Email</div><div class="cdval">contact@suezy.law</div></div></div>
+          <div class="cdr"><div class="cdic">🚨</div><div><div class="cdlbl">Emergency</div><div class="cdval" style="color:#c0392b;font-weight:700;">9123456789</div></div></div>
+        </div>
+        <h4 style="font-size:9.5px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;">World Offices</h4>
+        <div class="ogrid">
+          <div class="opill">US – Hawaii</div><div class="opill">US – San Francisco</div>
+          <div class="opill">UK – London</div><div class="opill">EU – Zurich</div>
+          <div class="opill">UAE – Abu Dhabi</div>
+        </div>
+      </div>
+      <div class="rev rr d1">
+        <div class="cform">
+          <div class="frow">
+            <div class="fg"><label class="flbl">Full Name</label><input class="finput" id="cfn" type="text" placeholder="Your name"/></div>
+            <div class="fg"><label class="flbl">Email</label><input class="finput" id="cfe" type="email" placeholder="your@email.com"/></div>
+          </div>
+          <div class="frow">
+            <div class="fg"><label class="flbl">Phone</label><input class="finput" type="tel" placeholder="+1 000 000 0000"/></div>
+            <div class="fg"><label class="flbl">Practice Area</label>
+              <select class="fsel" id="cfa">
+                <option value="">Select area…</option>
+                <option>Criminal Law</option><option>Employment Law</option><option>Intellectual Property</option>
+                <option>Family &amp; Inheritance Law</option><option>Medical Law</option><option>Corporate Law</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label class="flbl">Message</label><textarea class="ftxt" id="cfm" placeholder="Briefly describe your legal matter…"></textarea></div>
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:11.5px;color:rgba(11,22,40,.5);cursor:pointer;"><input type="checkbox" style="margin-top:2px;accent-color:var(--gold);"/> I agree to the Privacy Policy and consent to being contacted regarding my inquiry.</label>
+          <button class="bg" onclick="handleContact()" style="align-self:flex-start;">Request an Appointment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="ftop">
+      <div class="fbrand">
+        <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">⚖️</span><span style="font-family:var(--font-display);font-size:20px;letter-spacing:.25em;">SUEZY</span></div>
+        <p>Expert legal counsel for over four decades. Trusted by clients across 40+ jurisdictions worldwide.</p>
+        <div class="fsoc"><div class="fsocia">𝕏</div><div class="fsocia">in</div><div class="fsocia">f</div><div class="fsocia">▶</div></div>
+      </div>
+      <div class="fcol"><h4>Expertise</h4><ul>
+        <li onclick="goPage('expertise')">Automotive Industry</li><li onclick="goPage('expertise')">Cannabis Law</li>
+        <li onclick="goPage('expertise')">Construction &amp; Real Estate</li><li onclick="goPage('expertise')">Media &amp; Insurance Law</li>
+        <li onclick="goPage('expertise')">Technology &amp; Data Law</li>
+      </ul></div>
+      <div class="fcol"><h4>Company</h4><ul>
+        <li onclick="goPage('about')">About Us</li><li onclick="goPage('careers')">Careers</li>
+        <li>Press &amp; Media</li><li>Privacy Policy</li><li onclick="goPage('login')">Client Portal</li>
+      </ul></div>
+      <div class="fcol"><h4>FAQ</h4><ul>
+        <li>How do I choose a lawyer?</li><li>What is domestic violence?</li>
+        <li>How is custody determined?</li><li>Do I need a personal lawyer?</li>
+        <li>Are you licensed in my country?</li>
+      </ul></div>
+    </div>
+    <div class="fbot"><p>© 2026 SUEZY Law Firm. All Rights Reserved.</p><p>HIRE ONE OF OUR PROFESSIONAL LEGAL EXPERTS NOW</p></div>
+  </footer>
+
+</div><!-- /page-home -->
+
+<!-- ════════════════════════════════════════
+     PAGE: EXPERTISE
+════════════════════════════════════════ -->
+<div class="page" id="page-expertise">
+  <section class="chero">
+    <div class="cherocont">
+      <div class="stag">Practice Areas</div>
+      <h1 class="htitle">Our Fields of<br><em>Expertise</em></h1>
+      <p style="font-size:14px;color:var(--text-dim);max-width:540px;margin-top:20px;line-height:1.85;">Specialized legal teams dedicated to achieving the best possible outcome across a comprehensive range of practice areas.</p>
+    </div>
+  </section>
+  <section class="sec sd">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);">
+      <div class="expi rev" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">🏛️</div><div class="exn">Criminal Law</div><div class="exs" style="margin-bottom:4px;">7 Lawyers · Est. Practice Area</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Defense and prosecution matters from misdemeanors to serious felonies. Our criminal team has an unmatched track record in acquittals and sentence reductions.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+      <div class="expi rev d1" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">💼</div><div class="exn">Employment Law</div><div class="exs" style="margin-bottom:4px;">4 Experts</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Workplace disputes, wrongful termination, discrimination claims, contract review, and HR compliance. We represent both employers and employees.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+      <div class="expi rev" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">💡</div><div class="exn">Intellectual Property</div><div class="exs" style="margin-bottom:4px;">2 Experts</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Patents, trademarks, copyrights, and trade secrets. We protect your innovations and enforce your IP rights aggressively across global jurisdictions.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+      <div class="expi rev d1" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">👨‍👩‍👧</div><div class="exn">Family &amp; Inheritance Law</div><div class="exs" style="margin-bottom:4px;">4 Experts</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Divorce, custody, adoption, prenuptial agreements, and estate planning. We handle sensitive family matters with discretion and compassion.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+      <div class="expi rev" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">🏥</div><div class="exn">Medical Law</div><div class="exs" style="margin-bottom:4px;">5 Experts</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Medical malpractice, healthcare regulation, patient rights, and hospital liability. Our team bridges the gap between medicine and the law.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+      <div class="expi rev d1" style="flex-direction:column;align-items:flex-start;gap:12px;padding:40px;">
+        <div style="font-size:36px;">🏗️</div><div class="exn">Building &amp; Architect Law</div><div class="exs" style="margin-bottom:4px;">4 Experts</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.7;">Construction disputes, planning permissions, architectural contracts, and property development compliance for developers, architects, and contractors.</p>
+        <button class="bgh" style="padding:9px 20px;font-size:10px;margin-top:8px;" onclick="openModal()">Consult Now</button>
+      </div>
+    </div>
+  </section>
+  <footer class="footer"><div class="fbot" style="border:none;padding-top:0;"><p>© 2026 SUEZY Law Firm. All Rights Reserved.</p><button class="btxt" onclick="goPage('home')" style="color:var(--gold);">← Back to Home</button></div></footer>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE: ABOUT
+════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="ahero">
+    <div class="ahcont">
+      <div class="stag">Our Firm</div>
+      <h1 class="htitle" style="font-size:clamp(44px,5.5vw,80px);">Our Past &amp;<br><em>Our Future</em></h1>
+    </div>
+  </div>
+  <div class="a2col sd">
+    <div class="avis rev rl">⚖️</div>
+    <div class="rev rr d1">
+      <div class="stag">Who We Are</div>
+      <h2 class="stitle" style="margin-bottom:24px;">Built on Trust,<br>Driven by Results</h2>
+      <div class="atxt">
+        <p>SUEZY was founded in 1979 with a singular purpose: to provide elite legal representation to individuals, businesses, and institutions who demand nothing but the best.</p>
+        <p>Our attorneys are not just legal experts — they are strategic partners who understand that every case is a human story, and every client deserves undivided attention and unwavering advocacy.</p>
+        <p>With offices in the US, UK, EU, and UAE, we serve clients across 40+ jurisdictions with the precision and care that has defined SUEZY for generations.</p>
+      </div>
+      <button class="bg" style="margin-top:24px;" onclick="openModal()">Work With Us</button>
+    </div>
+  </div>
+  <section class="sec sd">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;">
+      <div class="rev">
+        <div class="stag">Our History</div>
+        <h2 class="stitle" style="margin-bottom:36px;">45 Years of Excellence</h2>
+        <div class="timeline">
+          <div class="tlitem"><div class="tlyear">1979</div><div class="tlev">SUEZY founded in New York by partners Douglas &amp; Ellison.</div></div>
+          <div class="tlitem"><div class="tlyear">1989</div><div class="tlev">Expanded to London — the firm's first international office.</div></div>
+          <div class="tlitem"><div class="tlyear">1998</div><div class="tlev">Opened Zurich office to serve EU financial sector clients.</div></div>
+          <div class="tlitem"><div class="tlyear">2005</div><div class="tlev">Abu Dhabi office launched, entering the Middle East market.</div></div>
+          <div class="tlitem"><div class="tlyear">2015</div><div class="tlev">Named "Best Law Firm" at Global Legal Awards for the 3rd time.</div></div>
+          <div class="tlitem" style="padding-bottom:0"><div class="tlyear">2024</div><div class="tlev">320+ successful cases. Still growing, still fighting for our clients.</div></div>
+        </div>
+      </div>
+      <div class="rev d1">
+        <div class="stag">Our Values</div>
+        <h2 class="stitle" style="margin-bottom:36px;">What We Stand For</h2>
+        <div class="vgrid">
+          <div class="vcard"><div class="vic">🎯</div><h4>Precision</h4><p>Every argument crafted with meticulous attention.</p></div>
+          <div class="vcard"><div class="vic">🤝</div><h4>Integrity</h4><p>Highest ethical standards in every engagement.</p></div>
+          <div class="vcard"><div class="vic">🌍</div><h4>Global Reach</h4><p>Seamless cross-border representation worldwide.</p></div>
+          <div class="vcard"><div class="vic">⚡</div><h4>Urgency</h4><p>24/7 availability for critical legal matters.</p></div>
+          <div class="vcard"><div class="vic">💡</div><h4>Innovation</h4><p>Legal tech for faster, smarter outcomes.</p></div>
+          <div class="vcard"><div class="vic">👥</div><h4>Community</h4><p>192 donations. Justice beyond the courtroom.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Team section -->
+  <section class="sec sm">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div class="stag rev" style="justify-content:center;">The People Behind SUEZY</div>
+      <h2 class="stitle rev d1" style="text-align:center;">Meet Our Attorneys</h2>
+    </div>
+    <div class="tgrid">
+      <div class="tcard rev"><div class="tph">👨‍💼</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">ALPHA</div><div class="trole">Senior Partner · Criminal Law · 22 yrs exp.</div></div></div>
+      <div class="tcard rev d1"><div class="tph">👨‍⚖️</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">BETA</div><div class="trole">Partner · Corporate Law · 15 yrs exp.</div></div></div>
+      <div class="tcard rev d2"><div class="tph">👩‍💼</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">GAMMA</div><div class="trole">Associate · Family Law · 8 yrs exp.</div></div></div>
+      <div class="tcard rev"><div class="tph">🧑‍⚖️</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">DELTA</div><div class="trole">Senior Partner · IP Law · 18 yrs exp.</div></div></div>
+      <div class="tcard rev d1"><div class="tph">👩‍⚖️</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">EPSILON</div><div class="trole">Partner · Medical Law · 12 yrs exp.</div></div></div>
+      <div class="tcard rev d2"><div class="tph">👨‍💼</div><div class="tov"><div class="tsoc"><div class="tsb">in</div><div class="tsb">✉</div></div><div class="tname">ZETA</div><div class="trole">Associate · Employment Law · 6 yrs exp.</div></div></div>
+    </div>
+  </section>
+  <footer class="footer"><div class="fbot" style="border:none;padding-top:0;"><p>© 2026 SUEZY Law Firm. All Rights Reserved.</p><button class="btxt" onclick="goPage('home')" style="color:var(--gold);">← Back to Home</button></div></footer>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE: CAREERS
+════════════════════════════════════════ -->
+<div class="page" id="page-careers">
+  <section class="chero">
+    <div class="cherocont">
+      <div class="stag">Join Our Team</div>
+      <h1 class="htitle">Build Your Career<br><em>With SUEZY</em></h1>
+      <p style="font-size:14px;color:var(--text-dim);max-width:540px;margin-top:20px;line-height:1.85;">We're looking for exceptional legal minds. Explore open positions and become part of a firm that values excellence, integrity, and growth.</p>
+      <div class="jfilter">
+        <button class="fbtn active" onclick="filterJobs('all',this)">All Positions</button>
+        <button class="fbtn" onclick="filterJobs('attorney',this)">Attorneys</button>
+        <button class="fbtn" onclick="filterJobs('paralegal',this)">Paralegals</button>
+        <button class="fbtn" onclick="filterJobs('operations',this)">Operations</button>
+      </div>
+    </div>
+  </section>
+  <section class="sec sd">
+    <div class="jgrid" id="jgrid">
+      <div class="jcard rev" data-cat="attorney"><div class="jbadge">Attorney</div><div class="jtitle">Senior Criminal Defense Attorney</div><div class="jmeta"><span>📍 New York</span><span>⏱ Full-time</span><span>💰 $180k–$240k</span></div><p class="jdesc">Lead complex criminal defense cases, mentor junior associates, and contribute to firm strategy. 8+ years experience required.</p><button class="bg japply" onclick="applyJob('Senior Criminal Defense Attorney')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+      <div class="jcard rev d1" data-cat="attorney"><div class="jbadge">Attorney</div><div class="jtitle">IP &amp; Technology Counsel</div><div class="jmeta"><span>📍 London</span><span>⏱ Full-time</span><span>💰 £120k–£160k</span></div><p class="jdesc">Advise tech clients on IP protection, licensing, and enforcement. Strong background in patent law and software licensing preferred.</p><button class="bg japply" onclick="applyJob('IP & Technology Counsel')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+      <div class="jcard rev" data-cat="paralegal"><div class="jbadge">Paralegal</div><div class="jtitle">Corporate Law Paralegal</div><div class="jmeta"><span>📍 Zurich</span><span>⏱ Full-time</span><span>💰 CHF 75k–90k</span></div><p class="jdesc">Support senior attorneys in M&amp;A transactions, due diligence, and contract drafting. Fluency in German and English required.</p><button class="bg japply" onclick="applyJob('Corporate Law Paralegal')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+      <div class="jcard rev d1" data-cat="operations"><div class="jbadge">Operations</div><div class="jtitle">Legal Operations Manager</div><div class="jmeta"><span>📍 Remote</span><span>⏱ Full-time</span><span>💰 $95k–$130k</span></div><p class="jdesc">Streamline firm operations, oversee the legal tech stack, and drive process improvement initiatives across all offices.</p><button class="bg japply" onclick="applyJob('Legal Operations Manager')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+      <div class="jcard rev" data-cat="paralegal"><div class="jbadge">Paralegal</div><div class="jtitle">Family Law Paralegal</div><div class="jmeta"><span>📍 Abu Dhabi</span><span>⏱ Full-time</span><span>💰 AED 120k–150k</span></div><p class="jdesc">Assist with divorce, custody, and estate matters. Strong organizational skills and empathy for clients in difficult situations are essential.</p><button class="bg japply" onclick="applyJob('Family Law Paralegal')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+      <div class="jcard rev d1" data-cat="operations"><div class="jbadge">Operations</div><div class="jtitle">Marketing &amp; BD Associate</div><div class="jmeta"><span>📍 New York</span><span>⏱ Full-time</span><span>💰 $70k–$95k</span></div><p class="jdesc">Drive business development initiatives, manage client events, and support the firm's digital marketing and brand strategy.</p><button class="bg japply" onclick="applyJob('Marketing & BD Associate')" style="font-size:10px;padding:10px 18px;">Apply Now</button></div>
+    </div>
+  </section>
+  <section class="sec sm">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div class="stag rev" style="justify-content:center;">Why SUEZY</div>
+      <h2 class="stitle rev d1" style="text-align:center;">Life at SUEZY</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div class="vcard rev"><div class="vic">🌐</div><h4>Global Exposure</h4><p>Work across offices in 5 countries with world-class clients.</p></div>
+      <div class="vcard rev d1"><div class="vic">📈</div><h4>Career Growth</h4><p>Structured mentorship and a clear partnership track.</p></div>
+      <div class="vcard rev d2"><div class="vic">🏥</div><h4>Full Benefits</h4><p>Comprehensive health, dental, vision, and wellness programs.</p></div>
+      <div class="vcard rev d3"><div class="vic">⚖️</div><h4>Work-Life Balance</h4><p>Flexible arrangements and generous PTO across all levels.</p></div>
+    </div>
+  </section>
+  <footer class="footer"><div class="fbot" style="border:none;padding-top:0;"><p>© 2026 SUEZY Law Firm. All Rights Reserved.</p><button class="btxt" onclick="goPage('home')" style="color:var(--gold);">← Back to Home</button></div></footer>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE: LOGIN
+════════════════════════════════════════ -->
+<div class="page" id="page-login">
+  <div class="lwrap">
+    <div class="lvis">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(201,169,110,.18) 1px,transparent 1px);background-size:28px 28px;"></div>
+      <div class="lvin">
+        <div class="lvic">⚖️</div>
+        <h2 class="lvt">Client Portal</h2>
+        <p class="lvs">Secure access to your case files &amp; legal team</p>
+        <div class="lvf">
+          <div class="lvfi">Real-time case status updates</div>
+          <div class="lvfi">Secure document sharing</div>
+          <div class="lvfi">Direct messaging with your attorney</div>
+          <div class="lvfi">Invoice and billing history</div>
+        </div>
+      </div>
+    </div>
+    <div class="lfp">
+      <div class="lflogo">SUEZY</div>
+      <h2 class="lft">Welcome back.</h2>
+      <p class="lfs">Sign in to access your legal dashboard</p>
+      <div class="lff"><label class="lflbl">Email Address</label><input class="lfinput" type="email" id="lEmail" placeholder="client@example.com"/></div>
+      <div class="lff"><label class="lflbl">Password</label><input class="lfinput" type="password" id="lPass" placeholder="••••••••"/></div>
+      <div class="lfact">
+        <label class="lfrem"><input type="checkbox" style="accent-color:var(--gold);"/> Remember me</label>
+        <button class="lffgt">Forgot password?</button>
+      </div>
+      <button class="lfbtn" onclick="handleLogin()">Login to Portal</button>
+      <div class="lfdiv">OR</div>
+      <button class="bgh" style="width:100%;justify-content:center;font-size:10.5px;" onclick="demoLogin()">▶ Enter Demo Dashboard</button>
+      <p class="lfback" style="margin-top:20px;">New client? <a onclick="openModal()">Request access →</a></p>
+      <p class="lfback" style="margin-top:10px;"><a onclick="goPage('home')">← Back to main site</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE: DASHBOARD
+════════════════════════════════════════ -->
+<div class="page" id="page-dashboard">
+  <div class="dash">
+    <div class="dside">
+      <div class="dlogo">⚖️ SUEZY</div>
+      <nav class="dnav">
+        <button class="dnavitem active" onclick="setDashTab(this,'dtab-overview')"><span class="di">📊</span> Overview</button>
+        <button class="dnavitem" onclick="setDashTab(this,'dtab-cases')"><span class="di">📁</span> My Cases</button>
+        <button class="dnavitem" onclick="setDashTab(this,'dtab-docs')"><span class="di">📄</span> Documents</button>
+        <button class="dnavitem" onclick="setDashTab(this,'dtab-msgs')"><span class="di">💬</span> Messages</button>
+        <button class="dnavitem" onclick="setDashTab(this,'dtab-billing')"><span class="di">💳</span> Billing</button>
+        <button class="dnavitem" onclick="setDashTab(this,'dtab-appts')"><span class="di">📅</span> Appointments</button>
+      </nav>
+      <div class="dlogout"><button class="dnavitem" style="color:#e74c3c;" onclick="goPage('home')"><span class="di">🚪</span> Log Out</button></div>
+    </div>
+    <div class="dmain">
+
+      <!-- OVERVIEW TAB -->
+      <div id="dtab-overview">
+        <div class="dheader">
+          <div class="dwelcome">Good morning, <span>Mr. Whitmore</span> 👋</div>
+          <button class="bg" style="font-size:10px;padding:10px 22px;" onclick="openModal()">+ New Consultation</button>
+        </div>
+        <div class="dcards">
+          <div class="dc"><div class="dcic">📁</div><div class="dcn" data-target="3">0</div><div class="dcl">Active Cases</div></div>
+          <div class="dc"><div class="dcic">📄</div><div class="dcn" data-target="12">0</div><div class="dcl">Documents</div></div>
+          <div class="dc"><div class="dcic">💬</div><div class="dcn" data-target="2">0</div><div class="dcl">Unread Messages</div></div>
+          <div class="dc"><div class="dcic">📅</div><div class="dcn" data-target="1">0</div><div class="dcl">Upcoming Meeting</div></div>
+        </div>
+        <div class="dtw">
+          <div class="dttitle">Active Cases</div>
+          <table class="dtable">
+            <thead><tr><th>Case ID</th><th>Matter</th><th>Attorney</th><th>Filed</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>#SZ-2024-001</td><td>Whitmore v. Nexus Corp</td><td>ALPHA</td><td>Jan 10, 2024</td><td><span class="sbadge sa">Active</span></td></tr>
+              <tr><td>#SZ-2024-047</td><td>IP Registration – Patent</td><td>DELTA</td><td>Mar 5, 2024</td><td><span class="sbadge sp">Pending</span></td></tr>
+              <tr><td>#SZ-2023-189</td><td>Employment Contract Review</td><td>BETA</td><td>Nov 2, 2023</td><td><span class="sbadge sc">Closed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dtw">
+          <div class="dttitle">Recent Documents</div>
+          <table class="dtable">
+            <thead><tr><th>Document</th><th>Type</th><th>Uploaded</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>📄 Brief_Whitmore_v_Nexus.pdf</td><td>Legal Brief</td><td>June 1, 2026</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+              <tr><td>📄 Patent_Application_Draft.pdf</td><td>Application</td><td>May 28, 2026</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+              <tr><td>📄 Engagement_Letter.pdf</td><td>Retainer</td><td>Jan 10, 2024</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CASES TAB -->
+      <div id="dtab-cases" style="display:none;">
+        <div class="dwelcome" style="margin-bottom:24px;">My <span>Cases</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="dtw" style="margin:0;display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:4px;">ACTIVE · #SZ-2024-001</div><div style="font-family:var(--font-display);font-size:18px;color:var(--text);">Whitmore v. Nexus Corp</div><div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Attorney: ALPHA · Filed: Jan 10, 2024</div></div>
+            <span class="sbadge sa">Active</span>
+          </div>
+          <div class="dtw" style="margin:0;display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:4px;">PENDING · #SZ-2024-047</div><div style="font-family:var(--font-display);font-size:18px;color:var(--text);">IP Registration – Patent</div><div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Attorney: DELTA · Filed: Mar 5, 2024</div></div>
+            <span class="sbadge sp">Pending</span>
+          </div>
+          <div class="dtw" style="margin:0;display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:4px;">CLOSED · #SZ-2023-189</div><div style="font-family:var(--font-display);font-size:18px;color:var(--text);">Employment Contract Review</div><div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Attorney: BETA · Filed: Nov 2, 2023</div></div>
+            <span class="sbadge sc">Closed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTS TAB -->
+      <div id="dtab-docs" style="display:none;">
+        <div class="dheader"><div class="dwelcome">My <span>Documents</span></div><button class="bg" style="font-size:10px;padding:10px 22px;" onclick="showT('📤 Upload feature coming soon!','')">Upload Document</button></div>
+        <div class="dtw">
+          <div class="dttitle">All Documents</div>
+          <table class="dtable">
+            <thead><tr><th>Document</th><th>Case</th><th>Type</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>📄 Brief_Whitmore_v_Nexus.pdf</td><td>#SZ-2024-001</td><td>Legal Brief</td><td>June 1</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+              <tr><td>📄 Patent_Application_Draft.pdf</td><td>#SZ-2024-047</td><td>Application</td><td>May 28</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+              <tr><td>📄 Engagement_Letter.pdf</td><td>#SZ-2024-001</td><td>Retainer</td><td>Jan 10</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+              <tr><td>📄 NDA_Nexus_Corp.pdf</td><td>#SZ-2024-001</td><td>Agreement</td><td>Jan 8</td><td><span style="color:var(--gold);cursor:pointer;font-size:11px;" onclick="showT('📥 Downloading…','ok')">Download</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MESSAGES TAB -->
+      <div id="dtab-msgs" style="display:none;">
+        <div class="dwelcome" style="margin-bottom:24px;"><span>Messages</span> <span style="font-size:14px;background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:20px;vertical-align:middle;font-family:var(--font-body);">2 new</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="dtw" style="margin:0;border-left:3px solid var(--gold);">
+            <div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:6px;">ALPHA · June 1, 2026 · 10:23 AM</div>
+            <p style="font-size:13px;color:var(--text);">The preliminary brief has been filed. We expect a response from opposing counsel within 14 days. I'll keep you posted on any developments.</p>
+          </div>
+          <div class="dtw" style="margin:0;border-left:3px solid var(--gold);">
+            <div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:6px;">DELTA · May 30, 2026 · 3:45 PM</div>
+            <p style="font-size:13px;color:var(--text);">Your patent application draft is ready for review. Please check the Documents section and let me know if you'd like any changes before we file.</p>
+          </div>
+          <div class="dtw" style="margin:0;opacity:.6;">
+            <div style="font-size:10px;letter-spacing:.15em;color:var(--text-dim);margin-bottom:6px;">BETA · May 15, 2026 · 9:00 AM</div>
+            <p style="font-size:13px;color:var(--text);">The employment contract review is now complete. The final report has been uploaded to your documents folder.</p>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:10px;">
+          <input style="flex:1;padding:12px 16px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;" placeholder="Reply to your attorney…" id="msgInput"/>
+          <button class="bg" style="padding:12px 22px;font-size:10px;" onclick="sendMsg()">Send</button>
+        </div>
+      </div>
+
+      <!-- BILLING TAB -->
+      <div id="dtab-billing" style="display:none;">
+        <div class="dwelcome" style="margin-bottom:24px;">My <span>Billing</span></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+          <div class="dc"><div class="dcic">💰</div><div class="dcn">$10,500</div><div class="dcl">Total Billed</div></div>
+          <div class="dc"><div class="dcic">✅</div><div class="dcn">$6,300</div><div class="dcl">Total Paid</div></div>
+          <div class="dc"><div class="dcic">⏳</div><div class="dcn" style="color:#f39c12;">$4,200</div><div class="dcl">Outstanding</div></div>
+        </div>
+        <div class="dtw">
+          <div class="dttitle">Invoice History</div>
+          <table class="dtable">
+            <thead><tr><th>Invoice</th><th>Date</th><th>Matter</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>#INV-2026-003</td><td>June 1, 2026</td><td>Whitmore v. Nexus</td><td>$4,200.00</td><td><span class="sbadge sp">Due</span></td></tr>
+              <tr><td>#INV-2026-002</td><td>May 1, 2026</td><td>Patent Application</td><td>$3,800.00</td><td><span class="sbadge sa">Paid</span></td></tr>
+              <tr><td>#INV-2026-001</td><td>Apr 1, 2026</td><td>Contract Review</td><td>$2,500.00</td><td><span class="sbadge sa">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="bg" style="margin-top:4px;font-size:10px;padding:12px 28px;" onclick="showT('💳 Redirecting to secure payment…','ok')">Pay Outstanding Balance</button>
+      </div>
+
+      <!-- APPOINTMENTS TAB -->
+      <div id="dtab-appts" style="display:none;">
+        <div class="dheader"><div class="dwelcome">My <span>Appointments</span></div><button class="bg" style="font-size:10px;padding:10px 22px;" onclick="openModal()">+ Book Appointment</button></div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="dtw" style="margin:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+            <div>
+              <div style="font-size:10px;letter-spacing:.15em;color:var(--gold);margin-bottom:6px;">UPCOMING · VIDEO CALL</div>
+              <div style="font-family:var(--font-display);font-size:18px;color:var(--text);">Case Review — Whitmore v. Nexus Corp</div>
+              <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Thursday, June 13, 2026 · 10:00 AM · with ALPHA</div>
+            </div>
+            <button class="bg" style="font-size:10px;padding:10px 20px;flex-shrink:0;" onclick="showT('📹 Launching video call…','ok')">Join Call</button>
+          </div>
+          <div class="dtw" style="margin:0;opacity:.6;">
+            <div style="font-size:10px;letter-spacing:.15em;color:var(--text-dim);margin-bottom:6px;">PAST · IN-PERSON</div>
+            <div style="font-family:var(--font-display);font-size:18px;color:var(--text);">Initial Consultation</div>
+            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">Monday, Jan 8, 2024 · 2:00 PM · SUEZY New York Office</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dmain -->
+  </div><!-- /dash -->
+</div><!-- /page-dashboard -->
+
+<script>
+// ═══ CURSOR ═══
+const cur=document.getElementById('cur'),ring=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+document.querySelectorAll('button,a,.expi,.tcard,.bcard,.jcard,[onclick]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('hov');ring.classList.add('hov');});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('hov');ring.classList.remove('hov');});
+});
+
+// ═══ SCROLL ═══
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(window.scrollY/h*100)+'%';
+  document.getElementById('mnav').classList.toggle('scrolled',window.scrollY>50);
+  document.getElementById('btt').classList.toggle('vis',window.scrollY>400);
+  // parallax hero dots
+  const dots=document.querySelector('.hdots');
+  if(dots) dots.style.transform=`translateY(${window.scrollY*0.12}px)`;
+});
+
+// ═══ PAGE TRANSITIONS ═══
+let curPage='home',transitioning=false;
+function goPage(name){
+  if(name===curPage||transitioning)return;
+  transitioning=true;
+  const ov=document.getElementById('pt');
+  ov.className='in';
+  setTimeout(()=>{
+    document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');});
+    const next=document.getElementById('page-'+name);
+    if(!next){transitioning=false;return;}
+    next.classList.add('active');
+    curPage=name;
+    window.scrollTo(0,0);
+    ov.className='out';
+    setTimeout(()=>{ov.className='';transitioning=false;},550);
+    document.querySelectorAll('.nlink').forEach(l=>l.classList.toggle('active',l.dataset.page===name));
+    setTimeout(()=>{initReveal();},100);
+    if(name==='dashboard') setTimeout(animCounters,400);
+  },500);
+}
+function gotoSec(page,id){
+  if(curPage!==page){
+    goPage(page);
+    setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},900);
+  } else {
+    const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+// ═══ SCROLL REVEAL ═══
+let revObs;
+function initReveal(){
+  if(revObs)revObs.disconnect();
+  revObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');revObs.unobserve(e.target);}});
+  },{threshold:0.07,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.rev:not(.vis)').forEach(el=>revObs.observe(el));
+}
+document.addEventListener('DOMContentLoaded',()=>{initReveal();animCounters();showCookie();});
+
+// ═══ COUNTERS ═══
+let cDone=false;
+function animCounters(){
+  document.querySelectorAll('[data-target]').forEach(el=>{
+    const t=+el.dataset.target;let c=0;const step=Math.max(1,Math.ceil(t/70));
+    const i=setInterval(()=>{c=Math.min(c+step,t);el.textContent=c;if(c>=t)clearInterval(i);},22);
+  });
+}
+
+// ═══ HERO SLIDESHOW ═══
+const heroData=[
+  {eye:'Home of Law & Order',title:'Experts<br>of <em>Justice</em>',desc:'We combine 45 years of legal excellence with a modern, client-first approach. From criminal defense to IP — our attorneys are your advocates.'},
+  {eye:'Client Have Confidence In Us',title:'Trusted<br><em>Advocates</em>',desc:'Our attorneys fight for your rights across every jurisdiction, with precision, discretion, and unwavering commitment.'},
+  {eye:'Vision Makes Us Who We Are',title:'Fields of<br><em>Expertise</em>',desc:'From criminal defense to intellectual property — specialized legal teams for every need, across every jurisdiction.'},
+];
+let slideI=0;
+function setSlide(i){
+  document.querySelectorAll('.hslide').forEach((s,j)=>s.classList.toggle('active',j===i));
+  document.querySelectorAll('.hdot').forEach((d,j)=>d.classList.toggle('active',j===i));
+  slideI=i;
+  const d=heroData[i];
+  document.getElementById('hEye').textContent=d.eye;
+  document.getElementById('hTitle').innerHTML=d.title;
+  document.getElementById('hDesc').textContent=d.desc;
+}
+setInterval(()=>setSlide((slideI+1)%3),5500);
+
+// ═══ TESTIMONIALS ═══
+let tI=0;
+function setTesti(i){
+  tI=i;
+  document.getElementById('ttrack').style.transform=`translateX(-${i*100}%)`;
+  document.querySelectorAll('.tdot').forEach((d,j)=>d.classList.toggle('active',j===i));
+}
+function nextTesti(){setTesti((tI+1)%3);}
+function prevTesti(){setTesti((tI+2)%3);}
+setInterval(nextTesti,7000);
+
+// ═══ FAQ ═══
+function toggleFaq(q){
+  const item=q.parentElement;
+  const was=item.classList.contains('open');
+  document.querySelectorAll('.faqitem.open').forEach(i=>i.classList.remove('open'));
+  if(!was)item.classList.add('open');
+}
+
+// ═══ MODAL ═══
+const modal=document.getElementById('modal'),mbox=document.getElementById('mbox');
+function openModal(){modal.style.opacity='1';modal.style.pointerEvents='all';mbox.style.transform='none';}
+function closeModal(){modal.style.opacity='0';modal.style.pointerEvents='none';mbox.style.transform='translateY(28px) scale(.97)';}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+function submitModal(){closeModal();showT('✓ Appointment request sent! We'll confirm within 24 hours.','ok');}
+
+// ═══ CONTACT ═══
+function handleContact(){
+  const n=document.getElementById('cfn').value.trim();
+  const e=document.getElementById('cfe').value.trim();
+  const m=document.getElementById('cfm').value.trim();
+  if(!n||!e){showT('Please fill in your name and email.','err');return;}
+  if(!e.includes('@')){showT('Please enter a valid email address.','err');return;}
+  showT('✓ Message sent! We'll respond within 24 hours.','ok');
+  document.getElementById('cfn').value='';
+  document.getElementById('cfe').value='';
+  document.getElementById('cfm').value='';
+}
+
+// ═══ NEWSLETTER ═══
+function handleNL(){
+  const e=document.getElementById('nlEmail').value.trim();
+  if(!e||!e.includes('@')){showT('Please enter a valid email address.','err');return;}
+  showT('✓ Subscribed to SUEZY Legal Insights!','ok');
+  document.getElementById('nlEmail').value='';
+}
+
+// ═══ LOGIN ═══
+function handleLogin(){
+  const e=document.getElementById('lEmail').value.trim();
+  const p=document.getElementById('lPass').value;
+  if(!e||!p){showT('Please enter your credentials.','err');return;}
+  showT('Authenticating…','');
+  setTimeout(()=>{goPage('dashboard');setTimeout(animCounters,400);},800);
+}
+function demoLogin(){showT('Loading demo dashboard…','');setTimeout(()=>{goPage('dashboard');setTimeout(animCounters,400);},600);}
+
+// ═══ DASHBOARD TABS ═══
+const dashTabs=['dtab-overview','dtab-cases','dtab-docs','dtab-msgs','dtab-billing','dtab-appts'];
+function setDashTab(btn,id){
+  document.querySelectorAll('.dnavitem').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  dashTabs.forEach(t=>{const el=document.getElementById(t);if(el)el.style.display=t===id?'block':'none';});
+}
+
+// ═══ CAREERS FILTER ═══
+function filterJobs(cat,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.jcard').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none';});
+}
+function applyJob(title){
+  openModal();
+  showT('Applying for: '+title,'');
+}
+
+// ═══ MSG SEND ═══
+function sendMsg(){
+  const inp=document.getElementById('msgInput');
+  if(!inp||!inp.value.trim()){showT('Please type a message first.','err');return;}
+  showT('✓ Message sent to your attorney.','ok');
+  inp.value='';
+}
+
+// ═══ TOAST ═══
+function showT(msg,type){
+  const c=document.getElementById('tc');
+  const t=document.createElement('div');
+  t.className='toast'+(type?' t'+type:'');
+  t.textContent=msg;
+  c.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),500);},3800);
+}
+
+// ═══ THEME ═══
+function toggleTheme(){
+  const light=document.documentElement.getAttribute('data-theme')==='light';
+  document.documentElement.setAttribute('data-theme',light?'dark':'light');
+  document.getElementById('tbtn').textContent=light?'☀ Light':'🌙 Dark';
+}
+
+// ═══ MOBILE MENU ═══
+function toggleMob(){
+  const d=document.getElementById('mdrawer'),h=document.getElementById('ham');
+  const open=d.classList.toggle('open');h.classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMob(){
+  document.getElementById('mdrawer').classList.remove('open');
+  document.getElementById('ham').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ═══ COOKIE ═══
+function showCookie(){if(!localStorage.getItem('ck'))setTimeout(()=>document.getElementById('cookie').classList.add('show'),2200);}
+function acceptCookie(){document.getElementById('cookie').classList.remove('show');localStorage.setItem('ck','1');showT('Cookie preferences saved.','ok');}
+function dismissCookie(){document.getElementById('cookie').classList.remove('show');}
+
+// ═══ KEYBOARD ═══
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeModal();closeMob();}
+});
+
+// ═══ SMOOTH HOVER ARROWS ═══
+document.querySelectorAll('.btxt').forEach(b=>{
+  const arr=b.querySelector('span');
+  if(arr){b.addEventListener('mouseenter',()=>{arr.style.transform='translateX(6px)';});b.addEventListener('mouseleave',()=>{arr.style.transform='';});}
+});
+
+// Init on load
+window.addEventListener('load',()=>{
+  initReveal();
+  setTimeout(animCounters,500);
+});
+</script>
+</body>
+</html>
